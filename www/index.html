@@ -1,1 +1,54 @@
-test
+<canvas width="800px" height="600px"></canvas>
+<script>
+	// trouver le "context"
+	let context = document.getElementsByTagName("canvas")[0].getContext("2d");	
+	function Loop(){
+		//récupérer des informations d'entrée
+		input();
+		//agir en conséquence des input sur les variables
+		animate();
+		//afficher à l'écran les éléments
+		render();
+		window.requestAnimationFrame(Loop);
+	}	
+	//position en X du rectangle noir
+	let position  = {x:0,y:0};
+	let direction = {x:1,y:0};
+	let position2  = {x:32,y:32};
+	let direction2 = {x:1,y:0};
+	function input(){
+	}
+	
+	function animate(){
+		if(position.x == (800-32)){
+			direction.x = 0;
+			direction.y = 1;
+		}
+		if(position.x == 0)   direction.x = 1;
+		
+		if(position2.x == (800-32-32)){
+			direction2.x = 0;
+			direction2.y = 1;
+		}
+		if(position2.x == 0)   direction2.x = 1;
+		
+		position.x = position.x + direction.x;	
+		position.y = position.y + direction.y;
+		position2.x = position2.x + direction2.x;	
+		position2.y = position2.y + direction2.y;
+	}
+	function render(){
+		//couleur de fond
+		context.fillStyle = "#ffb3ff";
+		context.fillRect(0,0,800,600)
+		
+		//rectangle1 mobile
+		context.fillStyle = "#000000";
+		context.fillRect(position.x,position.y, 32, 32);
+		
+		//rectangle2 mobile
+		context.fillStyle = "#000000";
+		context.fillRect(position2.x,position2.y, 32, 32);
+	}	
+	Loop();
+</script>
