@@ -9,6 +9,7 @@
 		animate();
 		//afficher à l'écran les éléments
 		render();
+		frameCounter++;
 		window.requestAnimationFrame(Loop);
 	}	
 	//position en X du rectangle noir
@@ -57,12 +58,23 @@
 		return Carre;
 	}
 	
+	//global
 	let t = [];
-	let numCarre = 58/2;
-	for(let i = 0; i < numCarre; i++){
-		t.push(CreateCarre(i));
-	}
+	let numCarre = 2/2;
+	let img = new Image();
+	img.src = "0x72_DungeonTilesetII_v1.1.png";
+	// 0 à 3
+	let step = 0;
+	let frameCounter = 0;
 	
+	function Start(){
+		
+		for(let i = 0; i < numCarre; i++){
+			t.push(CreateCarre(i));
+		}
+		
+		Loop();
+	}	
 	function input(){
 	}	
 	function animate(){
@@ -78,6 +90,15 @@
 		for(let i = 0; i < numCarre; i++){
 			t[i].render();
 		}
+		
+		//affichage de l'image
+		let j = 23 + step,
+			k = 1;
+		//console.log(step);
+		context.drawImage(img,16*j,16*k,16,16,0,0,16,16);
+		
+		if(frameCounter%25 == 0) step++;
+		if(step == 4) step = 0;
 	}	
-	Loop();
+	Start();
 </script>
