@@ -1,16 +1,18 @@
-<canvas width="600px" height="600px"></canvas>
+<canvas width="100px" height="100px"></canvas>
 <script>
 	// trouver le "context"
 	let context = document.getElementsByTagName("canvas")[0].getContext("2d");	
 	function Loop(){
-		//récupérer des informations d'entrée
-		input();
+	
 		//agir en conséquence des input sur les variables
 		animate();
 		//afficher à l'écran les éléments
 		render();
-		
+		//input gérés à la fin pour éviter un bug
+		input();
+
 		frameCounter++;
+		//récupérer des informations d'entrée
 		window.requestAnimationFrame(Loop);
 	}	
 	//position en X du rectangle noir
@@ -88,8 +90,9 @@
 	//1 => base du pilier
 	//2 => corps du pilier
 	let inputDroite;
-	
-	//room.length
+	let monstre = {
+		position : {x : 0,y : 0}
+	}
 	
 	function Start(){
 		
@@ -115,7 +118,8 @@
 		}
 		
 		if(inputDroite){
-			
+			console.log("touche droite");
+			monstre.position.x += 5;
 		}
 	}
 	function render(){
@@ -123,15 +127,10 @@
 		context.fillStyle = "#ffb3ff";
 		context.fillRect(0,0,800,600)
 		
-		for(let i = 0; i < numCarre; i++){
-			t[i].render();
-		}
-		
 		//affichage de l'image
 		let j = 23 + step,
 			k = 1;
-		//console.log(step);
-		//	context.drawImage(img,16*j,16*k,16,16,0,0,16,16);
+	
 		
 		//affichage du fond
 		for(let m = 0; m < room.length; m++){
@@ -183,6 +182,8 @@
 			}
 		}
 		
+		//console.log(step);
+		context.drawImage(img,16*j,16*k,16,16,monstre.position.x,monstre.position.y,16,16);
 		
 		if(frameCounter%25 == 0) step++;
 		if(step == 4) step = 0;
