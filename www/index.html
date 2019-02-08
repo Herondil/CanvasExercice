@@ -67,6 +67,8 @@
 	// 0 à 3
 	let step = 0;
 	let frameCounter = 0;
+	
+	//fond de la piècce
 	let room = [
 		[1,1,1,1,1],
 		[1,0,0,0,1],
@@ -74,6 +76,17 @@
 		[1,0,0,0,1],
 		[1,1,1,1,1]
 	];
+	
+	//superposition sur la pièce
+	let room2 = [
+		[,,2,,],
+		[,,2,,],
+		[,,"base du pilier",,],
+		[,,,,],
+		[,,,,]
+	];
+	//1 => base du pilier
+	//2 => corps du pilier
 	let inputDroite;
 	
 	//room.length
@@ -120,26 +133,7 @@
 		//console.log(step);
 		//	context.drawImage(img,16*j,16*k,16,16,0,0,16,16);
 		
-		//mur
-		
-		/*						//
-		for(let i = 0; i < room[0].length; i++){
-			if(room[0][i] == 1){
-				context.drawImage(img,16*2,16*1,16,16,16*i,0,16,16);
-			}else{
-				context.drawImage(img,16*1,16*4,16,16,16*i,0,16,16);
-			}
-		}
-		
-		for(let i = 0; i < room[1].length; i++){
-			if(room[1][i] == 1){
-				context.drawImage(img,16*2,16*1,16,16,16*i,16,16,16);
-			}else{
-				context.drawImage(img,16*1,16*4,16,16,16*i,16,16,16);
-			}
-		}
-		*/
-		
+		//affichage du fond
 		for(let m = 0; m < room.length; m++){
 			for(let i = 0; i < room[m].length; i++){
 				
@@ -163,14 +157,32 @@
 				context.drawImage(img,clipPoint.x,clipPoint.y,16,16,16*i,16*m,16,16);
 			}
 		}
+
+		//affichage de la superposition
+		for(let m = 0; m < room2.length; m++){
+			for(let i = 0; i < room2[m].length; i++){
+				
+				//point pour la découpe
+				let clipPoint = {x : 0, y : 0};
+				
+				switch (room2[m][i]){
+					case "base du pilier" 	:
+						//pilier base
+						clipPoint = { x : 16*5, y : 16*7 }
+						break;
+					case 2 	:
+						//pilier corps
+						clipPoint = { x : 16*5, y : 16*6 }
+						break;
+					default :
+						//rien
+						clipPoint = {x : 0, y : 0};
+				}
+				
+				context.drawImage(img,clipPoint.x,clipPoint.y,16,16,16*i,16*m,16,16);
+			}
+		}
 		
-		/*
-		context.drawImage(img,16*2,16*1,16,16,16*0,0,16,16);
-		context.drawImage(img,16*2,16*1,16,16,16*1,0,16,16);
-		context.drawImage(img,16*2,16*1,16,16,16*2,0,16,16);
-		context.drawImage(img,16*2,16*1,16,16,16*3,0,16,16);
-		context.drawImage(img,16*2,16*1,16,16,16*4,0,16,16);
-		*/
 		
 		if(frameCounter%25 == 0) step++;
 		if(step == 4) step = 0;
