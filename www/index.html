@@ -1,6 +1,6 @@
-<canvas width="100px" height="100px"></canvas>
+<canvas width="112px" height="112px"></canvas>
 <script>
-	// trouver le "context"
+	
 	let context = document.getElementsByTagName("canvas")[0].getContext("2d");	
 	function Loop(){
 	
@@ -10,12 +10,10 @@
 		render();
 		//input gérés à la fin pour éviter un bug
 		input();
-
+		
 		frameCounter++;
-		//récupérer des informations d'entrée
 		window.requestAnimationFrame(Loop);
 	}	
-	//position en X du rectangle noir
 	
 	function CreateCarre(i){
 		let Carre = {
@@ -72,28 +70,39 @@
 	
 	//fond de la piècce
 	let room = [
-		[1,1,1,1,1],
-		[1,0,0,0,1],
-		[1,0,3,0,1],
-		[1,0,0,0,1],
-		[1,1,1,1,1]
+		[1,1,1,1,1,1,1],
+		[1,0,0,1,0,0,1],
+		[1,0,3,1,0,0,1],
+		[1,0,0,1,1,0,1],
+		[1,1,0,1,1,0,1],
+		[1,1,0,0,0,0,1],
+		[1,1,1,1,1,1,1],
 	];
 	
 	//superposition sur la pièce
 	let room2 = [
 		[,,2,,],
-		[,,2,,],
-		[,,"base du pilier",,],
+		[,,"base du pilier",,"coffre"],
+		[,,,,],
 		[,,,,],
 		[,,,,]
 	];
 	//1 => base du pilier
 	//2 => corps du pilier
-	let inputDroite;
+	let inputData = {};
 	let monstre = {
-		position : {x : 0,y : 0}
+		position : {x : 20,y : 16},
 	}
 	
+	function LocatePlayer(){
+		
+		let place = { colonne : 0, ligne : 0 };
+		
+		place.colonne = Math.floor((monstre.position.x)/16);
+		place.ligne = Math.floor(monstre.position.y/16);
+	
+		return place;
+	}
 	function Start(){
 		
 		for(let i = 0; i < numCarre; i++){
@@ -103,12 +112,15 @@
 		Loop();
 	}	
 	function input(){
-		inputDroite = false;
+		inputData = {};
 		
 		// mettre à true si on appuie sur la flèche de droite
 		document.onkeydown = (e) => {
 			if(e.code == "ArrowRight"){
-				inputDroite = true;
+				inputData.droite = true;
+			}
+			if(e.code == "ArrowLeft"){
+				inputData.gauche = true;
 			}
 		};
 	}	
@@ -117,10 +129,18 @@
 			t[i].animate();
 		}
 		
-		if(inputDroite){
-			console.log("touche droite");
+		let place = LocatePlayer();
+		
+		if(inputData.droite ){
 			monstre.position.x += 5;
 		}
+		
+		//vérifier si les cases adjacentes contiennent des murs ou non, et décider
+		if(inputData.gauche ){
+			monstre.position.x -= 5;
+		}
+		
+		
 	}
 	function render(){
 		//couleur de fond
@@ -172,6 +192,9 @@
 					case 2 	:
 						//pilier corps
 						clipPoint = { x : 16*5, y : 16*6 }
+						break;
+					case "coffre" 	:
+						clipPoint = { x : 16*15, y : 16*13 }
 						break;
 					default :
 						//rien
