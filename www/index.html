@@ -9,6 +9,7 @@
 		animate();
 		//afficher à l'écran les éléments
 		render();
+		
 		frameCounter++;
 		window.requestAnimationFrame(Loop);
 	}	
@@ -73,6 +74,7 @@
 		[1,0,0,0,1],
 		[1,1,1,1,1]
 	];
+	let inputDroite;
 	
 	//room.length
 	
@@ -85,10 +87,22 @@
 		Loop();
 	}	
 	function input(){
+		inputDroite = false;
+		
+		// mettre à true si on appuie sur la flèche de droite
+		document.onkeydown = (e) => {
+			if(e.code == "ArrowRight"){
+				inputDroite = true;
+			}
+		};
 	}	
 	function animate(){
 		for(let i = 0; i < numCarre; i++){
 			t[i].animate();
+		}
+		
+		if(inputDroite){
+			
 		}
 	}
 	function render(){
