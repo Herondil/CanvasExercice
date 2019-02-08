@@ -3,11 +3,11 @@
 	// trouver le "context"
 	let context = document.getElementsByTagName("canvas")[0].getContext("2d");	
 	function Loop(){
-		//récupérer des informations d'entrée
+		//rÃ©cupÃ©rer des informations d'entrÃ©e
 		input();
-		//agir en conséquence des input sur les variables
+		//agir en consÃ©quence des input sur les variables
 		animate();
-		//afficher à l'écran les éléments
+		//afficher Ã  l'Ã©cran les Ã©lÃ©ments
 		render();
 		frameCounter++;
 		window.requestAnimationFrame(Loop);
@@ -63,16 +63,18 @@
 	let numCarre = 2/2;
 	let img = new Image();
 	img.src = "0x72_DungeonTilesetII_v1.1.png";
-	// 0 à 3
+	// 0 Ã  3
 	let step = 0;
 	let frameCounter = 0;
 	let room = [
-		[1,1,1,1,0,0,0,1,1,0,1,1,1],
-		[1,0,0,0,0,1],
-		[1,0,0,0,0,1],
-		[1,0,0,0,0,1],
-		[1,1,1,1,1,1]
+		[1,1,1,1,1],
+		[1,0,0,0,1],
+		[1,0,3,0,1],
+		[1,0,0,0,1],
+		[1,1,1,1,1]
 	];
+	
+	//room.length
 	
 	function Start(){
 		
@@ -106,12 +108,45 @@
 		
 		//mur
 		
-		
+		/*						//
 		for(let i = 0; i < room[0].length; i++){
 			if(room[0][i] == 1){
 				context.drawImage(img,16*2,16*1,16,16,16*i,0,16,16);
 			}else{
 				context.drawImage(img,16*1,16*4,16,16,16*i,0,16,16);
+			}
+		}
+		
+		for(let i = 0; i < room[1].length; i++){
+			if(room[1][i] == 1){
+				context.drawImage(img,16*2,16*1,16,16,16*i,16,16,16);
+			}else{
+				context.drawImage(img,16*1,16*4,16,16,16*i,16,16,16);
+			}
+		}
+		*/
+		
+		for(let m = 0; m < room.length; m++){
+			for(let i = 0; i < room[m].length; i++){
+				
+				//point pour la dÃ©coupe
+				let clipPoint = {x : 0, y : 0};
+				
+				switch (room[m][i]){
+					case 1 	:
+						//mur
+						clipPoint = { x : 16*2, y : 16*1 }
+						break;
+					case 3 	:
+						//sol fissurÃ©
+						clipPoint = { x : 16*2, y : 16*4 }
+						break;
+					default :
+						//sol normal
+						clipPoint = { x : 16*1, y : 16*4 }
+				}
+				
+				context.drawImage(img,clipPoint.x,clipPoint.y,16,16,16*i,16*m,16,16);
 			}
 		}
 		
